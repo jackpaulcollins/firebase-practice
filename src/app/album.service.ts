@@ -15,11 +15,25 @@ export class AlbumService {
     return this.albums;
   }
 
+  updateAlbum(localUpdatedAlbum){
+    var albumEntryInFirebase = this.getAlbumById(localUpdatedAlbum.$key);
+    albumEntryInFirebase.update({
+      title: localUpdatedAlbum.title,
+      artist: localUpdatedAlbum.artist,
+      description: localUpdatedAlbum.description
+    });
+  }
+
   addAlbum(newAlbum: Album){
   this.albums.push(newAlbum)
   }
 
   getAlbumById(albumId: string){
     return this.database.object('albums/' + albumId);
+  }
+
+  deleteAlbum(localAlbumToDelete){
+    let albumEntryInFirebase = this.getAlbumById(localAlbumToDelete.$key);
+    albumEntryInFirebase.remove();
   }
 }
